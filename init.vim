@@ -80,6 +80,7 @@ nnoremap <C-n> :NERDTreeToggle<cr>
 lua << EOF
 -- autocomplte capabilities to pass into lsp-config
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
 -- TYPESCRIPT
 require'lspconfig'.tsserver.setup{
   capabilities = capabilities,
@@ -98,10 +99,41 @@ require'lspconfig'.tsserver.setup{
   vim.keymap.set('n', '<leader>dl', '<cmd>Telescope diagnostics<cr>', {buffer=0})
   -- rename a variable (LSP fixes it for you)
   vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, {buffer=0})
-  -- code actions
-  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, {buffer=0})
+  -- code actions under cursor
+  vim.keymap.set('n', '<leader>c', vim.lsp.buf.code_action, {buffer=0})
   end,
 }
+
+-- C#
+local pid = vim.fn.getpid()
+local omnisharp_bin = "/home/jakes/.local/omnisharp/OmniSharp"
+require'lspconfig'.omnisharp.setup{
+  capabilities = capabilities,
+  on_attach = function()
+  -- hover diagnostics
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, {buffer=0}) 
+  -- go to definition
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {buffer=0})
+  -- go to type definition
+  vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, {buffer=0})
+  -- go to type implementation
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, {buffer=0})
+  -- diagnostics
+  vim.keymap.set('n', '<leader>dj', vim.diagnostic.goto_next, {buffer=0})
+  vim.keymap.set('n', '<leader>dk', vim.diagnostic.goto_prev, {buffer=0})
+  vim.keymap.set('n', '<leader>dl', '<cmd>Telescope diagnostics<cr>', {buffer=0})
+  -- rename a variable (LSP fixes it for you)
+  vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, {buffer=0})
+  -- find usings
+  vim.keymap.set('n', '<leader>fu', '<cmd>Telescope lsp_references<cr>')
+  -- code actions under cursor
+  vim.keymap.set('n', '<leader>c', vim.lsp.buf.code_action, {buffer=0})
+  -- code actions for the buffer
+  vim.keymap.set('n', '<leader>cb', '<cmd>%Telescope lsp_range_code_actions<cr>')
+  end,
+  cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
+}
+
 
 -- LSP Autocompletion
 vim.opt.completeopt={'menu', 'menuone', 'noselect'}
@@ -126,6 +158,8 @@ mapping = cmp.mapping.preset.insert({
   ['<C-Space>'] = cmp.mapping.complete(),
   ['<C-e>'] = cmp.mapping.abort(),
   ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+  ['<Tab>'] = cmp.mapping.select_next_item(),
+  ['<S-Tab>'] = cmp.mapping.select_prev_item()
 }),
 sources = cmp.config.sources({
   { name = 'nvim_lsp' },

@@ -1,42 +1,21 @@
-set nocompatible            " disable compatibility to old-time vi
-set showmatch               " show matching 
-set ignorecase              " case insensitive 
-set mouse=v                 " middle-click paste with 
-set hlsearch                " highlight search 
-set incsearch               " incremental search
-set tabstop=4               " number of columns occupied by a tab 
-set softtabstop=4           " see multiple spaces as tabstops so <BS> does the right thing
-set expandtab               " converts tabs to white space
-set shiftwidth=4            " width for autoindents
-set autoindent              " indent a new line the same amount as the line just typed
-set number                  " add line numbers
-set wildmode=longest,list   " get bash-like tab completions
-set cc=80                   " set an 80 column border for good coding style
-filetype plugin indent on   "allow auto-indenting depending on file type
-syntax on                   " syntax highlighting
-set mouse=a                 " enable mouse click
-set clipboard=unnamedplus   " using system clipboard
-filetype plugin on
-set cursorline              " highlight current cursorline
-set ttyfast                 " Speed up scrolling in Vim
-set noswapfile              " disable creating swap file
-set nohlsearch              " no highlight search
-set hidden                  " keep buffers open
-set noerrorbells            " no noises
-set nowrap                  " dont wrap text
-set noswapfile              " no swap file
-set nobackup                " let a plugin deal with backup
-set undodir=~/.vim/undodir  " set undodir
-set undofile                " undo file
-set scrolloff=8             " scroll starts before i reach bottom
-set signcolumn=yes          " column to display errs
-
 " leader key
 let mapleader = " "
+" map edit vim rc
+nnoremap <leader>rc :edit $MYVIMRC<CR>
+
+" dont have a cleaner solution for this 
+" dotnet build 
+autocmd FileType cs nnoremap <leader>b :!dotnet build<CR>
 
 call plug#begin()
 " Themes 
 Plug 'catppuccin/nvim', {'as': 'catppuccin'}
+Plug 'ellisonleao/gruvbox.nvim'
+
+" Status bar
+Plug 'nvim-lualine/lualine.nvim'
+" Devicons 
+Plug 'kyazdani42/nvim-web-devicons'
 
 " Telescope
 Plug 'nvim-lua/plenary.nvim'
@@ -57,13 +36,28 @@ Plug 'hrsh7th/cmp-path'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 
+" CSharp things LSP cant provide yet (rip)
+Plug 'Omnisharp/omnisharp-vim'
+
+" Treesitter (syntax highlight)
+Plug 'nvim-treesitter/nvim-treesitter', {'do': 'TSUpdate'}
+
 call plug#end()
 
+" disable omnisharp highlighting
+let g:OmniSharp_highlighting = 0
 
 " Set colorscheme
-let g:catppuccin_flavour = "dusk" " latte, frappe, macchiato, mocha
-colorscheme catppuccin
-" highlight Normal guibg=none
+" let g:catppuccin_flavour = "macchiato" " dusk, latte, frappe, macchiato, mochaolorscheme
+" colorscheme catppuccin
+set background=dark "
+augroup user_colors
+    autocmd!
+    autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
+augroup END
+
+colorscheme gruvbox
+
 
 " Telescope mappings to find files
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
@@ -76,8 +70,42 @@ nnoremap <C-n> :NERDTreeToggle<cr>
 " Start NERDTree and put the cursor back in the other window.
 " autocmd VimEnter * NERDTree | wincmd p
 
+" Not sure if thisll work but from Github:
+let g:OmniSharp_server_use_mono = 0
+let g:OmniSharp_server_path = '/home/jakes/.local/omnisharp/OmniSharp'
+" OmniSharp bindings
+" go to definition
+nnoremap gi <buffer><cmd>OmniSharpGotoImplementation<CR>
+autocmd FileType cs nmap <silent> gd :OmniSharpGotoDefinition<CR>
+
 " LSP CONFIG
 lua << EOF
+
+-- devicons 
+require('nvim-web-devicons').setup()
+
+-- quick and dirty - clean up!!
+-- plugin and using highlight groups
+local gruvbox = {
+    fg = '#928374',
+    bg = '#1F2223',
+    black ='#1B1B1B',
+    skyblue = '#458588',
+    cyan = '#83a597',
+    green = '#689d6a',
+    oceanblue = '#1d2021',
+    magenta = '#fb4934',
+    orange = '#fabd2f',
+    red = '#cc241d',
+    violet = '#b16286',
+    white = '#ebdbb2',
+    yellow = '#d79921',
+}
+require('lualine').setup{
+    options = { theme = 'gruvbox' }
+}
+
+
 -- autocomplte capabilities to pass into lsp-config
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
@@ -105,19 +133,22 @@ require'lspconfig'.tsserver.setup{
 }
 
 -- C#
+local util = require('lspconfig').util
 local pid = vim.fn.getpid()
-local omnisharp_bin = "/home/jakes/.local/omnisharp/OmniSharp"
+local omnisharp_bin = '/home/jakes/.local/omnisharp/OmniSharp'
 require'lspconfig'.omnisharp.setup{
   capabilities = capabilities,
   on_attach = function()
   -- hover diagnostics
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, {buffer=0}) 
+  -- unfortunately LSP def / implementation doesnt work with those (waiting for fix)
+  -- in the mean time , using Omnisharp-vim
   -- go to definition
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {buffer=0})
+  -- vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {buffer=0})
   -- go to type definition
-  vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, {buffer=0})
+  -- vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, {buffer=0})
   -- go to type implementation
-  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, {buffer=0})
+  -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, {buffer=0})
   -- diagnostics
   vim.keymap.set('n', '<leader>dj', vim.diagnostic.goto_next, {buffer=0})
   vim.keymap.set('n', '<leader>dk', vim.diagnostic.goto_prev, {buffer=0})
@@ -132,6 +163,18 @@ require'lspconfig'.omnisharp.setup{
   vim.keymap.set('n', '<leader>cb', '<cmd>%Telescope lsp_range_code_actions<cr>')
   end,
   cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
+  root_dir = util.root_pattern('*.sln'), 
+}
+
+-- Treesitter syntax highlighting
+require'nvim-treesitter.configs'.setup {
+    ensure_installed = {"c_sharp", "javascript"},
+    sync_install = false,
+    ignore_install = { "javascript" },
+    highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false,
+    },
 }
 
 
@@ -170,3 +213,37 @@ sources = cmp.config.sources({
 })
 
 EOF
+
+" SETS
+set nocompatible            " disable compatibility to old-time vi 
+set showmatch               " show matching 
+set ignorecase              " case insensitive 
+set mouse=v                 " middle-click paste with 
+set hlsearch                " highlight search 
+set incsearch               " incremental search
+set tabstop=4               " number of columns occupied by a tab 
+set softtabstop=4           " see multiple spaces as tabstops so <BS> does the right thing
+set expandtab               " converts tabs to white space
+set shiftwidth=4            " width for autoindents
+set autoindent              " indent a new line the same amount as the line just typed
+set number                  " add line numbers
+set wildmode=longest,list   " get bash-like tab completions
+set cc=80                   " set an 80 column border for good coding style
+filetype plugin indent on   "allow auto-indenting depending on file type
+syntax on                   " syntax highlighting
+set mouse=a                 " enable mouse click
+set clipboard=unnamedplus   " using system clipboard
+filetype plugin on
+set cursorline              " highlight current cursorline
+set ttyfast                 " Speed up scrolling in Vim
+set noswapfile              " disable creating swap file
+set nohlsearch              " no highlight search
+set hidden                  " keep buffers open
+set noerrorbells            " no noises
+set nowrap                  " dont wrap text
+set noswapfile              " no swap file
+set nobackup                " let a plugin deal with backup
+set undodir=~/.vim/undodir  " set undodir
+set undofile                " undo file
+set scrolloff=8             " scroll starts before i reach bottom
+set signcolumn=yes          " column to display errs

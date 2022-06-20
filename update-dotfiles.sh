@@ -21,5 +21,9 @@ cp -r /home/jakes/.config/i3 $dotfiles_dir/i3
 rm -r $dotfiles_dir/alacritty/.alacritty.yml
 cp /home/jakes/.alacritty.yml $dotfiles_dir/alacritty/
 
+# polybar
+rm -r $dotfiles_dir/polybar/
+cp -r /home/jakes/.config/polybar $dotfiles_dir/polybar
+
 # git add .
 # git push origin/main # push like a mad lad

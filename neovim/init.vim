@@ -42,6 +42,9 @@ Plug 'Omnisharp/omnisharp-vim'
 " Treesitter (syntax highlight)
 Plug 'nvim-treesitter/nvim-treesitter', {'do': 'TSUpdate'}
 
+" Notes 
+Plug 'vimwiki/vimwiki'
+
 call plug#end()
 
 " disable omnisharp highlighting

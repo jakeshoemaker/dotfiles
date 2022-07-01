@@ -16,14 +16,12 @@ Plug 'ellisonleao/gruvbox.nvim'
 Plug 'nvim-lualine/lualine.nvim'
 " Devicons 
 Plug 'kyazdani42/nvim-web-devicons'
+Plug 'kyazdani42/nvim-tree.lua'
 
 " Telescope
 Plug 'nvim-lua/plenary.nvim'
 Plug 'BurntSushi/ripgrep'
 Plug 'nvim-telescope/telescope.nvim'
-
-" NerdTree (FileNav)
-Plug 'preservim/nerdtree'
 
 " Native LSP
 Plug 'neovim/nvim-lspconfig'
@@ -68,10 +66,6 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
-" Toggles for file explorer
-nnoremap <C-n> :NERDTreeToggle<cr>
-" Start NERDTree and put the cursor back in the other window.
-" autocmd VimEnter * NERDTree | wincmd p
 
 " Not sure if thisll work but from Github:
 let g:OmniSharp_server_use_mono = 0
@@ -86,6 +80,26 @@ lua << EOF
 
 -- devicons 
 require('nvim-web-devicons').setup()
+require'nvim-web-devicons'.get_icons()
+require("nvim-tree").setup({
+  sort_by = "case_sensitive",
+  view = {
+    adaptive_size = true,
+    side = left,
+    mappings = {
+      list = {
+        { key = "u", action = "dir_up" },
+      },
+    },
+  },
+  renderer = {
+    group_empty = true,
+  },
+  filters = {
+    dotfiles = true,
+  },
+})
+vim.keymap.set("n", "<C-n>", ":NvimTreeToggle<cr>", { noremap = true })
 
 -- quick and dirty - clean up!!
 -- plugin and using highlight groups
@@ -129,12 +143,58 @@ require'lspconfig'.tsserver.setup{
   vim.keymap.set('n', '<leader>dk', vim.diagnostic.goto_prev, {buffer=0})
   vim.keymap.set('n', '<leader>dl', '<cmd>Telescope diagnostics<cr>', {buffer=0})
   -- rename a variable (LSP fixes it for you)
-  vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, {buffer=0})
+  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, {buffer=0})
   -- code actions under cursor
   vim.keymap.set('n', '<leader>c', vim.lsp.buf.code_action, {buffer=0})
   end,
 }
 
+-- LSP Settings
+local on_attach = function(client, bufnr)
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  local bufopts = { noremap=true, silent=true, buffer=bufnr }
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+  vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+  vim.keymap.set('n', '<leader>wl', function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, bufopts)
+  vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
+  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', '<leader>c', vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+  vim.keymap.set('n', '<leader>fm', vim.lsp.buf.formatting, bufopts)
+  vim.keymap.set('n', '<leader>dj', vim.diagnostic.goto_next, bufopts)
+  vim.keymap.set('n', '<leader>dk', vim.diagnostic.goto_prev, bufopts)
+  vim.keymap.set('n', '<leader>dl', '<cmd>Telescope diagnostics<cr>', bufopts) 
+  vim.keymap.set('n', '<leader>cb', '<cmd>%Telescope lsp_range_code_actions<cr>', bufopts)
+end
+
+require('lspconfig')['rust_analyzer'].setup {
+    on_attach = on_attach,
+    settings = {
+        ["rust-analyzer"] = {
+            assist = {
+                importGranularity = "module",
+                importPrefix = "self",
+            },
+            cargo = {
+                loadOutDirsFromCheck = true
+            },
+            procMacro = {
+                enable = true
+            },
+        }
+    },
+}
 -- C#
 local util = require('lspconfig').util
 local pid = vim.fn.getpid()
@@ -169,9 +229,11 @@ require'lspconfig'.omnisharp.setup{
   root_dir = util.root_pattern('*.sln'), 
 }
 
+
+
 -- Treesitter syntax highlighting
 require'nvim-treesitter.configs'.setup {
-    ensure_installed = {"c_sharp", "javascript"},
+    ensure_installed = {"c_sharp", "javascript", "rust"},
     sync_install = false,
     ignore_install = { "javascript" },
     highlight = {

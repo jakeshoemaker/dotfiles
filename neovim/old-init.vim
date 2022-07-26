@@ -11,6 +11,8 @@ call plug#begin()
 " Themes 
 Plug 'catppuccin/nvim', {'as': 'catppuccin'}
 Plug 'ellisonleao/gruvbox.nvim'
+Plug 'sainnhe/everforest'
+Plug 'folke/tokyonight.nvim'
 
 " Status bar
 Plug 'nvim-lualine/lualine.nvim'
@@ -43,6 +45,9 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': 'TSUpdate'}
 " Notes 
 Plug 'vimwiki/vimwiki'
 
+" Terminal popup
+Plug 'akinsho/toggleterm.nvim', {'tag': 'v1.*'}
+
 call plug#end()
 
 " disable omnisharp highlighting
@@ -57,7 +62,7 @@ augroup user_colors
     autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
 augroup END
 
-colorscheme gruvbox
+colorscheme tokyonight
 
 
 " Telescope mappings to find files
@@ -119,7 +124,7 @@ local gruvbox = {
     yellow = '#d79921',
 }
 require('lualine').setup{
-    options = { theme = 'gruvbox' }
+    options = { theme = 'tokyonight' }
 }
 
 
@@ -257,8 +262,8 @@ snippet = {
   end,
 },
 window = {
-  -- completion = cmp.config.window.bordered(),
-  -- documentation = cmp.config.window.bordered(),
+  completion = cmp.config.window.bordered(),
+  documentation = cmp.config.window.bordered(),
 },
 mapping = cmp.mapping.preset.insert({
   ['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -277,6 +282,10 @@ sources = cmp.config.sources({
 })
 })
 
+-- toggle term
+require('toggleterm').setup{}
+vim.keymap.set('n', '<leader>sh', ':ToggleTerm<cr>',{ noremap=true, silent=true, buffer=bufnr })
+vim.keymap.set('t', '<esc>', [[<C-\><C-n>]],{ noremap=true, silent=true, buffer=bufnr })
 EOF
 
 " SETS

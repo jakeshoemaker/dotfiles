@@ -2,6 +2,6 @@
 dotfiles for my personal dev setup
 
 currently running
- -  endeavouros
+ -  ubuntu
  -  nvim
  -  i3

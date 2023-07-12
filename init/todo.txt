@@ -1,0 +1,11 @@
+1. write a installer script:
+  - chmod +x ./* makes all files executable
+
+2. install: 
+ - rust -> done
+ - i3 -> done
+ - js
+ - spotify
+
+3. configure scripts: 
+ - these will have to come after i have them and can script a way to configure my setups

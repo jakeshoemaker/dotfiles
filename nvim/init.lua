@@ -42,7 +42,11 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
+      {
+        'j-hui/fidget.nvim',
+        tag = "legacy",
+        opts = {}
+      },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -78,14 +82,20 @@ require('lazy').setup({
   --  end,
   --},
     -- Theme pack -> [nightfox, dayfox, dawnfox, nordfox, terafox, carbonfox]
+--{
+  --'EdenEast/nightfox.nvim',
+  -- priority = 1000,
+  -- config = function()
+--  vim.cmd.colorscheme 'carbonfox'
+--  end,
+--},
   {
-    'EdenEast/nightfox.nvim',
+    'luisiacc/gruvbox-baby',
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'carbonfox'
+      vim.cmd.colorscheme 'gruvbox-baby'
     end,
   },
-
   { -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
@@ -132,7 +142,13 @@ require('lazy').setup({
   },
   -- Omnisharp - extended (full metadata goto definition support)
   'Hoffs/omnisharp-extended-lsp.nvim',
-
+  {
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    opts = {
+      disable_filetype = { "TelescopePrompt" , "vim" },
+      }
+    },
   -- require 'kickstart.plugins.autoformat',
   -- require 'kickstart.plugins.debug',
 
@@ -210,7 +226,7 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'c_sharp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'help', 'vim' },
+  ensure_installed = { 'c', 'css', 'cpp', 'c_sharp', 'go', 'html', 'lua', 'python', 'rust', 'tsx', 'typescript', 'help', 'vim' },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = false,
@@ -365,7 +381,7 @@ local mason_lspconfig = require 'mason-lspconfig'
 
 mason_lspconfig.setup {
   ensure_installed = {
-    "lua_ls", "rust_analyzer", "tsserver", "gopls"
+    "lua_ls", "rust_analyzer", "tsserver", "gopls", "html", "tailwindcss"
   },
   automatic_installation = {
     exclude = { "omnisharp" }

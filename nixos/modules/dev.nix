@@ -41,7 +41,7 @@
   programs.git = {
     enable = true;
     config = {
-      user.name = "jshoemaker";
+      user.name = "jakeshoemaker";
       user.email = "jakeshoe3@gmail.com";
       init.defaultBranch = "main";
     };

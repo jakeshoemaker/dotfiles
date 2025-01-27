@@ -29,7 +29,6 @@
   swapDevices = [ { device = "/dev/disk/by-uuid/44426694-d294-41f0-8548-4521db7346d8"; }];
 
   # Boot loader configuration
-  # Boot loader configuration
   boot.loader = {
     systemd-boot = {
       enable = true;
@@ -69,12 +68,9 @@
   networking.useDHCP = lib.mkDefault true;
 
   # Enable OpenGL
-  harware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
   };
-
 
   # Load nvidia driver for xorg and wayland
   services.xserver.videoDrivers = [ "nvidia" ];

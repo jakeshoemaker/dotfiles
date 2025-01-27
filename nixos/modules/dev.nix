@@ -56,9 +56,16 @@
     nerd-fonts.lilex
     nerd-fonts.symbols-only
     nerd-fonts.zed-mono
-    (pkgs.fetchurl {
-      url = "https://github.com/pavel/agave-code/raw/refs/heads/master/AgaveCode.ttf";
-      sha256 = "0785z0iz55b3nasdzrin7gfr5rid3zcnavq31v95wqg50xw7w4pi";
+    (stdenv.mkDerivation {
+      name = "agave-code";
+      src = fetchurl {
+        url = "https://github.com/pavel/agave-code/raw/refs/heads/master/AgaveCode.ttf";
+        sha256 = "0785z0iz55b3nasdzrin7gfr5rid3zcnavq31v95wqg50xw7w4pi";
+      };
+      installPhase = ''
+        mkdir -p $out/share/fonts/truetype
+        cp $src $out/share/fonts/truetype/
+      '';
     })
   ];
 }

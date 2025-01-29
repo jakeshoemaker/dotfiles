@@ -2,7 +2,7 @@
 { config, pkgs, ... }:
 
 {
-  # Development packages
+  # Shell packages
   environment.systemPackages = with pkgs; [
     cmake 
     curl

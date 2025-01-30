@@ -32,23 +32,14 @@
   boot.loader = {
     systemd-boot = {
       enable = true;
-      configurationLimit = 10;
     };
     efi = {
       canTouchEfiVariables = true;
       efiSysMountPoint = "/boot";
     };
-    grub.enable = false;
   };
 
-  # Windows boot entry
-  boot.loader.systemd-boot.extraEntries = {
-    "windows.conf" = ''
-      title Windows
-      efi /EFI/Microsoft/Boot/bootmgfw.efi
-    '';
-  };
-
+  
   # Sound hardware configuration
   security.rtkit.enable = true;
   services.pulseaudio.enable = false;

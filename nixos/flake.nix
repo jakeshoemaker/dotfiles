@@ -7,10 +7,10 @@
 
   outputs = { self, nixpkgs }: {
     nixosConfigurations = {
-      omen = nixpkgs.lib.nixosSystem {
+      main = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./hardware/default.nix
+          ./hardware/configuration.nix
           ./modules/core.nix
           ./modules/desktop.nix
 	  ./modules/dev.nix

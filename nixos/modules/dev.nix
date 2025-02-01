@@ -1,6 +1,4 @@
-
 { config, pkgs, ... }:
-
 {
   # Shell packages
   environment.systemPackages = with pkgs; [

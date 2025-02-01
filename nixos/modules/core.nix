@@ -1,6 +1,5 @@
 { config, pkgs, ... }:
 {
-
   # Enable nix flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -8,6 +7,10 @@
   nixpkgs.config = {
     allowUnfree = true;
   };
+
+  # Boot loader settings
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   # Basic system settings
   networking = {
@@ -43,4 +46,7 @@
 
   # System state version
   system.stateVersion = "24.11";
+  
+  # Hardware specific networking
+  networking.useDHCP = lib.mkDefault true;
 }

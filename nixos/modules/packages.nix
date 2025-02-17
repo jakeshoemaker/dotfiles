@@ -6,5 +6,6 @@
 {
   # TODO: Automate organization & installation via script
   environment.systemPackages = with pkgs; [
+    spotify
   ];
 }

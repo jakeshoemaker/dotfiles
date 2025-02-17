@@ -29,6 +29,12 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
+    settings = {
+      exec-once = [
+        "swww init"
+        "swww img /home/shoe/dotfiles/wallpapers/gruvbox-landscape.png"
+      ];
+    };
   };
 
   # system packages needed for hyprland support
@@ -41,4 +47,16 @@
     swaylock-effects
     wl-clipboard
   ];
+
+  # run a startup service that sets a wallpaper
+  systemd.user.services.swww = {
+    description = "Wallpaper daemon";
+    wantedBy = [ "hyprland-session.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.swww}/bin/swww init";
+      ExecStartPost = "${pkgs.swww}/bin/swww img /home/shoe/dotfiles/wallpapers/gruvbox-landscape.png";
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+  };
 }

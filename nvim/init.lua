@@ -275,7 +275,7 @@ treesitter_parser_config.templ = {
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'bash', 'c', 'cpp', 'go', 'lua', 'ocaml', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
+  ensure_installed = { 'bash', 'c', 'cpp', 'gleam', 'go', 'lua', 'ocaml', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = false,
 
@@ -392,18 +392,15 @@ local servers = {
   -- bashls = {},
   -- clangd = {},
   gopls = {},
-  pyright = {},
+  -- pyright = {},
   rust_analyzer = {},
-  tsserver = {},
+  -- tsserver = {},
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
     },
   },
-  -- ruby_ls = {},
-  -- templ = {},
-  -- ocamllsp = {}
 }
 
 -- Setup neovim lua configuration
@@ -429,6 +426,11 @@ mason_lspconfig.setup_handlers {
     }
   end,
 }
+-- gleam setup requires manual installation for some reason
+require('lspconfig').gleam.setup({
+  on_attach = on_attach,
+  capabilities = capabilities
+})
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`

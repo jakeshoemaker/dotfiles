@@ -6,24 +6,31 @@
     cmake 
     curl
     direnv
+    erlang_nox
     fd
     font-awesome
     fzf
-    git
     gcc
+    git
+    gleam
+    go
     htop
     jq
     lazygit
     lazydocker
     neofetch
     neovim
+    rustup
     ripgrep
+    rebar3
     starship
     stow
     tmux
     tree
+    uv
     wget
     zsh
+
   ];
   
 

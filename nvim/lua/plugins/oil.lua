@@ -71,14 +71,16 @@ return {
             callback = function()
               detail = not detail
               if detail then
-                require("oil").set_columns({ "icon", "permissions", "size", "mtime" })
+                require('oil').set_columns({ "icon", "permissions", "size", "mtime" })
               else
-                require("oil").set_columns({ "icon" })
+                require('oil').set_columns({ "icon" })
               end
             end,
           },
         },
       })
+      vim.keymap.set('n', '<leader>os', ":lua require('oil').open_preview({ horizontal = true })<CR>",
+        { desc = 'Open file in stacked preview' })
       vim.keymap.set('n', '<leader>ef', ':Oil<CR>', { desc = 'Explore files using Oil.nvim' })
     end,
   }

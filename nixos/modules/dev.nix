@@ -7,6 +7,7 @@
     curl
     direnv
     erlang_nox
+    eww
     fd
     font-awesome
     fzf
@@ -30,7 +31,6 @@
     uv
     wget
     zsh
-
   ];
   
 

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 {
   # OpenGL & Nvidia support
   hardware.graphics = {
@@ -34,7 +34,7 @@
   # system packages needed for hyprland support
   environment.systemPackages = with pkgs; [
     kitty
-    swww
+    inputs.swww.packages.${pkgs.system}.swww
     rofi-wayland
     dunst
     libnotify

@@ -43,6 +43,10 @@
     '';
   };
 
-  # Ensure Git itself is installed (it likely is already via default.nix, but doesn't hurt)
-  home.packages = [ pkgs.git ];
+  # Ensure Git itself is installed (already covered by common/default.nix but safe over sorry)
+  home.packages = with pkgs; [
+    git 
+    gh    # github cli
+    glab  # gitlab cli
+  ];
 }

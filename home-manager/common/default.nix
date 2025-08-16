@@ -32,6 +32,7 @@
     direnv      # Directory-based environment switcher
     unzip       
     tree        # Display directory trees
+    just        # Task runner
 
     # --- Core linux utils ---
     coreutils   # GNU core utilities (ls, cp, mv, etc.)
@@ -46,5 +47,7 @@
     nixpkgs-fmt          
     nil         # nix ls
     marksman    # markdown ls
+    go          # Go programming language
+    bun
   ];
-
+}

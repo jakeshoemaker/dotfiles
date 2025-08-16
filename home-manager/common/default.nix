@@ -6,7 +6,6 @@
   # --- SSH ---
   programs.ssh = {
     enable = true;
-    startAgent = true;                        # start ssh-agent on login
     addKeysToAgent = [ "~/.ssh/id_ed25519" ]; # auto add ssh key to ssh-agent
 
     matchBlocks = {                           # define host ssh configuration

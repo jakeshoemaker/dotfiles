@@ -6,9 +6,14 @@
   # --- SSH ---
   programs.ssh = {
     enable = true;
-    addKeysToAgent = [ "~/.ssh/id_ed25519" ]; # auto add ssh key to ssh-agent
+    addKeysToAgent = "yes";
+      
+    
+    matchBlocks = {
+      "*" = {
+        identityFile = ["~/.ssh/id_ed25519"];
+      };
 
-    matchBlocks = {                           # define host ssh configuration
       "github.com" = {
         user = "git";
         identityFile = "~/.ssh/id_ed25519";

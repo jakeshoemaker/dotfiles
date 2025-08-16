@@ -52,6 +52,7 @@
     nil         # nix ls
     marksman    # markdown ls
     go          # Go programming language
-    bun
+    bun         # Bun package manager
+    nodejs_20   # Node.js runtime
   ];
 }

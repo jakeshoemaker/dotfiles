@@ -1,8 +1,8 @@
-  -- In my nixos build I'm gonna move away from using mason.
-  -- With nix's declarative package management we can install language
-  -- tooling in the project folder, and then as needed install languages
-  -- and tools globally with home-manager. So now we won't need mason
-  -- to install language servers, instead we just use vanilla lspconfig
+-- In my nixos build I'm gonna move away from using mason.
+-- With nix's declarative package management we can install language
+-- tooling in the project folder, and then as needed install languages
+-- and tools globally with home-manager. So now we won't need mason
+-- to install language servers, instead we just use vanilla lspconfig
 return {
   {
     "neovim/nvim-lspconfig",
@@ -21,13 +21,13 @@ return {
     },
     config = function()
       local map_lsp_keybinds = require("shoe.keymaps").map_lsp_keybinds
-  
+
       -- Default LSP handlers with rounded borders
       local default_handlers = {
         ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
         ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" }),
       }
-  
+
       local ts_ls_inlay_hints = {
         includeInlayEnumMemberValueHints = true,
         includeInlayFunctionLikeReturnTypeHints = true,
@@ -38,12 +38,12 @@ return {
         includeInlayVariableTypeHints = true,
         includeInlayVariableTypeHintsWhenTypeMatchesName = true,
       }
-  
+
       -- on_attach: call your custom keymap binding function
       local on_attach = function(_client, buffer_number)
         map_lsp_keybinds(buffer_number)
       end
-  
+
       -- List your LSP servers here.
       local servers = {
         bashls = {},
@@ -126,16 +126,16 @@ return {
           check = { command = "clippy", features = "all" },
         },
       }
-  
+
       local formatters = {
         prettierd = {},
         stylua = {},
       }
-  
+
       -- Use blink.cmp to extend LSP capabilities.
       -- This replaces the cmp-nvim-lsp integration.
       local capabilities = require("blink.cmp").get_lsp_capabilities()
-  
+
       -- Setup each LSP server. We merge in any server-specific capabilities by passing
       -- the existing config.capabilities to blink.cmp.get_lsp_capabilities.
       for name, config in pairs(servers) do
@@ -150,7 +150,7 @@ return {
           root_dir = config.root_dir,
         })
       end
-  
+
       -- Configure borders for LspInfo UI and diagnostics
       require("lspconfig.ui.windows").default_options.border = "rounded"
       vim.diagnostic.config({ float = { border = "rounded" } })

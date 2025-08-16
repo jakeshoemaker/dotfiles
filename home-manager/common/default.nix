@@ -6,10 +6,14 @@
   # --- SSH ---
   programs.ssh = {
     enable = true;
-    startAgent = true;                        # start ssh-agent on login
-    addKeysToAgent = [ "~/.ssh/id_ed25519" ]; # auto add ssh key to ssh-agent
+    addKeysToAgent = "yes";
+      
+    
+    matchBlocks = {
+      "*" = {
+        identityFile = ["~/.ssh/id_ed25519"];
+      };
 
-    matchBlocks = {                           # define host ssh configuration
       "github.com" = {
         user = "git";
         identityFile = "~/.ssh/id_ed25519";
@@ -32,6 +36,7 @@
     direnv      # Directory-based environment switcher
     unzip       
     tree        # Display directory trees
+    just        # Task runner
 
     # --- Core linux utils ---
     coreutils   # GNU core utilities (ls, cp, mv, etc.)
@@ -46,5 +51,8 @@
     nixpkgs-fmt          
     nil         # nix ls
     marksman    # markdown ls
+    go          # Go programming language
+    bun         # Bun package manager
+    nodejs_20   # Node.js runtime
   ];
-
+}

@@ -35,11 +35,11 @@ vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, { desc
 vim.keymap.set("n", "<leader>sd", require("telescope.builtin").diagnostics, { desc = "[S]earch [D]iagnostics" })
 vim.keymap.set("n", "<leader>st", ":TodoTelescope<CR>", { desc = "[S]earch [T]odos" })
 vim.keymap.set("n", "<leader>/", function()
-	-- You can pass additional configuration to telescope to change theme, layout, etc.
-	require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
-		winblend = 0,
-		previewer = false,
-	}))
+  -- You can pass additional configuration to telescope to change theme, layout, etc.
+  require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+    winblend = 0,
+    previewer = false,
+  }))
 end, { desc = "[/] Fuzzily search in current buffer" })
 
 -- Diagnostic keymaps
@@ -50,43 +50,43 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 
 -- LSP Keymaps (per buffer)
 M.map_lsp_keybinds = function(buffer_number)
-	vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "LSP: Rename symbol", buffer = buffer_number })
-	vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP: Code action", buffer = buffer_number })
-	vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "LSP: Go to definition", buffer = buffer_number })
-	vim.keymap.set(
-		"n",
-		"gr",
-		require("telescope.builtin").lsp_references,
-		{ desc = "LSP: Go to references", buffer = buffer_number }
-	)
-	vim.keymap.set(
-		"n",
-		"gi",
-		require("telescope.builtin").lsp_implementations,
-		{ desc = "LSP: Go to implementations", buffer = buffer_number }
-	)
-	vim.keymap.set(
-		"n",
-		"<leader>bs",
-		require("telescope.builtin").lsp_document_symbols,
-		{ desc = "LSP: Document symbols", buffer = buffer_number }
-	)
-	vim.keymap.set(
-		"n",
-		"<leader>ps",
-		require("telescope.builtin").lsp_workspace_symbols,
-		{ desc = "LSP: Workspace symbols", buffer = buffer_number }
-	)
-	vim.keymap.set(
-		"n",
-		"<leader>k",
-		vim.lsp.buf.signature_help,
-		{ desc = "LSP: Signature help", buffer = buffer_number }
-	)
-	vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "LSP: Hover Documentation", buffer = buffer_number })
-	vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, { desc = "LSP: Signature help", buffer = buffer_number })
-	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "LSP: Go to declaration", buffer = buffer_number })
-	vim.keymap.set("n", "td", vim.lsp.buf.type_definition, { desc = "LSP: Type definition", buffer = buffer_number })
+  vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "LSP: Rename symbol", buffer = buffer_number })
+  vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP: Code action", buffer = buffer_number })
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "LSP: Go to definition", buffer = buffer_number })
+  vim.keymap.set(
+    "n",
+    "gr",
+    require("telescope.builtin").lsp_references,
+    { desc = "LSP: Go to references", buffer = buffer_number }
+  )
+  vim.keymap.set(
+    "n",
+    "gi",
+    require("telescope.builtin").lsp_implementations,
+    { desc = "LSP: Go to implementations", buffer = buffer_number }
+  )
+  vim.keymap.set(
+    "n",
+    "<leader>bs",
+    require("telescope.builtin").lsp_document_symbols,
+    { desc = "LSP: Document symbols", buffer = buffer_number }
+  )
+  vim.keymap.set(
+    "n",
+    "<leader>ps",
+    require("telescope.builtin").lsp_workspace_symbols,
+    { desc = "LSP: Workspace symbols", buffer = buffer_number }
+  )
+  vim.keymap.set(
+    "n",
+    "<leader>k",
+    vim.lsp.buf.signature_help,
+    { desc = "LSP: Signature help", buffer = buffer_number }
+  )
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "LSP: Hover Documentation", buffer = buffer_number })
+  vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, { desc = "LSP: Signature help", buffer = buffer_number })
+  vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "LSP: Go to declaration", buffer = buffer_number })
+  vim.keymap.set("n", "td", vim.lsp.buf.type_definition, { desc = "LSP: Type definition", buffer = buffer_number })
 end
 
 -- Terminal Mode --
@@ -99,13 +99,13 @@ vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]], { desc = "Navigate right in 
 vim.keymap.set("t", "<space>", "<space>", { desc = "Re-enable space key in terminal" })
 
 local function create_dev_layout()
-	vim.cmd([[vsplit]])
-	vim.cmd([[wincmd l]])
-	vim.cmd([[split]])
-	vim.cmd([[wincmd j]])
-	vim.cmd([[Oil]])
-	vim.cmd([[wincmd k]])
-	vim.cmd([[terminal]])
+  vim.cmd([[vsplit]])
+  vim.cmd([[wincmd l]])
+  vim.cmd([[split]])
+  vim.cmd([[wincmd j]])
+  vim.cmd([[Oil]])
+  vim.cmd([[wincmd k]])
+  vim.cmd([[terminal]])
 end
 vim.keymap.set("n", "<leader>sl", create_dev_layout, { noremap = true, silent = true, desc = "[S]plit [L]ayout" })
 

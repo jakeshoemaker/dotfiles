@@ -62,6 +62,7 @@
     docker-compose  # Docker Compose (Lightweight container orchestration)
     kubernetes      # Kubernetes nixpkg [ installs kubeadm, kubectl, and more ]
     kubernetes-helm # Kubernetes package manager
+    k0sctl          # Kubernetes bootstrappiung / management tool for k0s clusters
     kind            # Kubernetes in Docker
     k9s             # Kubernetes Cluster Management (TUI)
     tilt            # Kubernetes development tool

@@ -1,12 +1,21 @@
 # ~/dotfiles/home-manager/common/default.nix
-{ 
-  pkgs,
-  lib,
-  buildNpmPackage,
-  fetchFromGitHub,
-  ... 
-}:
+{ pkgs, ... }:
+let
+  geminiCli = pkgs.buildNpmPackage {
+    pname = "gemini-cli";
+    version = "0.3.0-nightly.20250823.1a89d185";
 
+    src = pkgs.fetchFromGithub {
+      owner = "google-gemini";
+      repo = "gemini-cli";
+      rev = "v0.3.0-nightly.20250823.1a89d185";
+      sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    };
+
+    nodejs = pkgs.nodejs_20;
+    npmDepsHash = "sha256-lRygITKPUACUUxT+PhZ4eWAqK/myR9320GDF+85z21U=";
+  };
+in
 {
 
   # --- SSH ---
@@ -75,19 +84,6 @@
     k9s             # Kubernetes Cluster Management (TUI)
     tilt            # Kubernetes development tool
     
+    geminiCli       # defined locally, gemini-cli npm package
   ];
-
-  # # get the latest version of gemini-cli
-  # pkgs.buildNpmPackage (finalAttrs: {
-  #   pname = "gemini-cli";
-  #   version = "0.3.0-nightly.20250823.1a89d185";
-  #
-  #   src = fetchFromGithub {
-  #     owner = "google-gemini";
-  #     repo = "gemini-cli";
-  #     tag = "v${finalAttrs.version}";
-  #     hash = "sha256:a3a55153d92b0b3b92ae104e8d23fc547a1e0a77fe00dead69da2f989fe9d4b5";
-  #   };
-  #
-  # })
 }

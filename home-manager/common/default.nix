@@ -9,7 +9,7 @@ let
       owner = "google-gemini";
       repo = "gemini-cli";
       rev = "v0.3.0-nightly.20250823.1a89d185";
-      sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+      sha256 = "sha256-qGIwqKmV5Y1KWzV12kkfEIz8O+//Vs+nLEvMqkpdWtM=";
     };
 
     nodejs = pkgs.nodejs_20;

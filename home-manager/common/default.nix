@@ -1,21 +1,6 @@
 # ~/dotfiles/home-manager/common/default.nix
 { pkgs, ... }:
-let
-  geminiCli = pkgs.buildNpmPackage {
-    pname = "gemini-cli";
-    version = "0.3.0-nightly.20250823.1a89d185";
 
-    src = pkgs.fetchFromGitHub {
-      owner = "google-gemini";
-      repo = "gemini-cli";
-      rev = "v0.3.0-nightly.20250823.1a89d185";
-      sha256 = "sha256-qGIwqKmV5Y1KWzV12kkfEIz8O+//Vs+nLEvMqkpdWtM=";
-    };
-
-    nodejs = pkgs.nodejs_20;
-    npmDepsHash = "sha256-lRygITKPUACUUxT+PhZ4eWAqK/myR9320GDF+85z21U=";
-  };
-in
 {
 
   # --- SSH ---
@@ -69,7 +54,7 @@ in
     marksman    # markdown ls
     go          # Go programming language
     bun         # Bun package manager
-    nodejs_20   # Node.js runtime
+    nodejs_22   # Node.js runtime
     lazygit     # Git TUI
     lazydocker  # Docker TUI
     uv          # Python package manager
@@ -84,6 +69,8 @@ in
     k9s             # Kubernetes Cluster Management (TUI)
     tilt            # Kubernetes development tool
     
-    geminiCli       # defined locally, gemini-cli npm package
+    # --- AI / LLM Tooling --- 
+    gemini-cli      # Googles Terminal Agent
+    ollama          # Running LLMs locally
   ];
 }

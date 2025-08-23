@@ -54,5 +54,16 @@
     go          # Go programming language
     bun         # Bun package manager
     nodejs_20   # Node.js runtime
+    lazygit     # Git TUI
+    lazydocker  # Docker TUI
+
+    # --- Container Tooling ---
+    docker          # Docker CLI (Container runtime)
+    docker-compose  # Docker Compose (Lightweight container orchestration)
+    kubernetes      # Kubernetes nixpkg [ installs kubeadm, kubectl, and more ]
+    kubernetes-helm # Kubernetes package manager
+    kind            # Kubernetes in Docker
+    k9s             # Kubernetes Cluster Management (TUI)
+    tilt            # Kubernetes development tool
   ];
 }

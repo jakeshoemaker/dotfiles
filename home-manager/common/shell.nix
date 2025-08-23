@@ -17,7 +17,8 @@
       # bat alias (use bat instead of cat for viewing files)
       cat = "bat --paging=never"; # Use bat, disable paging for pipe compatibility if needed
                                   # Or just 'bat' if you always want its pager
-
+      k = "kubectl";              # could tell that was gonna get annoying fast
+      
       # Other useful aliases
       ".." = "cd ..";
       "..." = "cd ../..";

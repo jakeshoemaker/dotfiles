@@ -81,6 +81,7 @@ return {
             syntaxDocumentation = { enable = true },
           },
         },
+        nixd = {},
         nil_ls = {},
         phpactor = {},
         pyright = {

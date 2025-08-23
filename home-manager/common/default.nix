@@ -5,7 +5,7 @@ let
     pname = "gemini-cli";
     version = "0.3.0-nightly.20250823.1a89d185";
 
-    src = pkgs.fetchFromGithub {
+    src = pkgs.fetchFromGitHub {
       owner = "google-gemini";
       repo = "gemini-cli";
       rev = "v0.3.0-nightly.20250823.1a89d185";

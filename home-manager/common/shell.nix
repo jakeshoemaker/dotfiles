@@ -59,6 +59,6 @@
     zsh-syntax-highlighting
     starship
     direnv
-    gemini-cli
+    # gemini-cli
   ];
 }

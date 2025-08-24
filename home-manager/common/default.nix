@@ -70,7 +70,6 @@
     tilt            # Kubernetes development tool
     
     # --- AI / LLM Tooling --- 
-    gemini-cli      # Googles Terminal Agent
     ollama          # Running LLMs locally
   ];
 }

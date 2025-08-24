@@ -6,8 +6,8 @@
     enable = true;
     defaultEditor = true;
 
-    extraPackages = with pkgs; [
-    ];
+    # extraPackages = with pkgs; [
+    # ];
     
     viAlias = true;
     vimAlias = true;

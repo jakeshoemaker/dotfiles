@@ -2,7 +2,7 @@
 { config, pkgs, ... }:
 
 {
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.05";
 
   # Basic user info
   home.username = "shoe";

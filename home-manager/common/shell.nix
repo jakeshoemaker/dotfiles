@@ -31,6 +31,12 @@
     syntaxHighlighting.enable = true; # Highlight commands and syntax in the terminal
     enableCompletion = true;          # Enable Zsh's built-in completion system
     initContent = ''
+      # Export custom variables
+      export KUBECONFIG=~/.kube/config:~/.kube/k3s-pi.yaml
+      
+      # Add stuff to path
+      export PATH="/home/shoe/.bun/bin:$PATH"
+
       # Initialize starship prompt
       eval "$(starship init zsh)"
 
@@ -53,5 +59,6 @@
     zsh-syntax-highlighting
     starship
     direnv
+    gemini-cli
   ];
 }

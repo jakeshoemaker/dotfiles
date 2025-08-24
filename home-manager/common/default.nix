@@ -54,7 +54,7 @@
     marksman    # markdown ls
     go          # Go programming language
     bun         # Bun package manager
-    nodejs_24   # Node.js runtime
+    nodejs_22   # Node.js runtime
     lazygit     # Git TUI
     lazydocker  # Docker TUI
     uv          # Python package manager

@@ -58,6 +58,7 @@
     lazygit     # Git TUI
     lazydocker  # Docker TUI
     uv          # Python package manager
+    
 
     # --- Container Tooling ---
     docker          # Docker CLI (Container runtime)
@@ -72,5 +73,6 @@
     # --- AI / LLM Tooling --- 
     ollama          # Running LLMs locally
     gemini-cli      # Agentic LLM tooling
+    google-clasp    # CLI tool to develop google apps script projects locally
   ];
 }

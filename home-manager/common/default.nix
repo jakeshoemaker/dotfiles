@@ -21,7 +21,6 @@
 
   };
   home.packages = with pkgs; [
-    git
     eza # modern ls
     jq
     ripgrep
@@ -31,8 +30,6 @@
     curl
     wget
     htop
-    tmux
-    direnv # Directory-based environment switcher
     unzip
     tree # Display directory trees
     just # Task runner

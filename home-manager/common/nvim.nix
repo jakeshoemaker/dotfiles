@@ -18,8 +18,4 @@
     recursive = true; 		# Tells home-manager to link the dir recursively
   };
 
-  home.packages = with pkgs; [
-    ripgrep
-    fd
-  ];  
 }

@@ -1,6 +1,6 @@
 # ~/dotfiles/flake.nix
 {
-  description = "Nixos config with home-manager (round 2) lol";
+  description = "Home Manager configurations for all my machines";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -12,31 +12,50 @@
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
     let
-      system = "x86_64-linux";
-
-      # Get nixpkgs specific to the system
-      pkgs = import nixpkgs {
+      # Helper: build pkgs for a given system
+      pkgsFor = system: import nixpkgs {
         inherit system;
         config.allowUnfree = true;
       };
-    in
-    {
-      # Define your Home Manager configuration here
-      homeConfigurations = {
-	# WSL
-        "shoe@shoe" = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs; # Use the nixpkgs we defined above
-          # The list of modules defining your configuration
+
+      # Helper: build a homeManagerConfiguration
+      mkHome = { system, username, homeDirectory ? "/home/${username}", extraModules ? [] }:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = pkgsFor system;
           modules = [
             ./home-manager/home.nix
-            # We'll add more modules here later (like for git, zsh, nvim)
-          ];
-          # Example if i need to pass extra args down to my files
-          # extraSpecialArgs = { inherit inputs; };
+            { home.username = username; home.homeDirectory = homeDirectory; }
+          ] ++ extraModules;
+        };
+    in
+    {
+      homeConfigurations = {
+        # WSL on x86_64 Linux
+        "shoe@shoe" = mkHome {
+          system   = "x86_64-linux";
+          username = "shoe";
         };
 
-        # Configurations for other machines (mac, other linux) will go here later
-        # "your_mac_username@your_mac_hostname" = home-manager.lib.homeManagerConfiguration { ... };
+        # --- Add new machines below ---
+        # macOS (Apple Silicon) example:
+        # "jake@Jakes-MacBook-Pro" = mkHome {
+        #   system        = "aarch64-darwin";
+        #   username      = "jake";
+        #   homeDirectory = "/Users/jake";
+        # };
+
+        # macOS (Intel) example:
+        # "jake@work-mbp" = mkHome {
+        #   system        = "x86_64-darwin";
+        #   username      = "jake";
+        #   homeDirectory = "/Users/jake";
+        # };
+
+        # Linux laptop/desktop example:
+        # "jake@thinkpad" = mkHome {
+        #   system   = "x86_64-linux";
+        #   username = "jake";
+        # };
       };
     };
-} 
+}

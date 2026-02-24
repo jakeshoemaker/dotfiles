@@ -1,3 +1,5 @@
+local group = vim.api.nvim_create_augroup("PhpIndent", { clear = true })
+
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
   pattern = { "*.php" },
   group = group,
@@ -6,6 +8,5 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
     vim.bo.expandtab = true
     vim.bo.tabstop = 4
     vim.bo.shiftwidth = 4
-    vim.cmd('echo "PHP aucmd triggered!"')
   end,
 })

@@ -18,7 +18,6 @@
       pull.rebase = false;
     };
 
-
     # Git Aliases (you can also define these in Zsh/Bash, but here is another option)
     aliases = {
       co = "checkout";
@@ -28,24 +27,15 @@
       lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
     };
 
-    # Exclude global gitignore file (managed separately below if needed)
-    # excludesFile = "~/.gitignore_global";
+    ignores = [
+      ".DS_Store"
+      "*.pyc"
+      "__pycache__/"
+      ".env"
+    ];
   };
 
-  # Optional: Manage a global gitignore file
-  home.file.".gitignore_global" = {
-    text = ''
-      # Ignore common files
-      .DS_Store
-      *.pyc
-      __pycache__/
-      .env
-    '';
-  };
-
-  # Ensure Git itself is installed (already covered by common/default.nix but safe over sorry)
   home.packages = with pkgs; [
-    git 
     gh    # github cli
     glab  # gitlab cli
   ];

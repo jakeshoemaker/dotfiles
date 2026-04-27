@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
+DOTFILES_REPO="${DOTFILES_REPO:-}"
+BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
+
+info() { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
+warn() { printf '\033[1;33mWARN:\033[0m %s\n' "$*"; }
+fail() { printf '\033[1;31mERROR:\033[0m %s\n' "$*" >&2; exit 1; }
+
+usage() {
+  cat <<EOF
+Usage: scripts/bootstrap [--repo git@github.com:USER/dotfiles.git] [--dir ~/dotfiles]
+
+Environment:
+  DOTFILES_REPO   Git remote to clone when DOTFILES_DIR does not exist
+  DOTFILES_DIR    Target dotfiles directory; default: ~/dotfiles
+
+Examples:
+  ./scripts/bootstrap
+  DOTFILES_REPO=git@github.com:USER/dotfiles.git bash -c "$(curl -fsSL https://raw.githubusercontent.com/USER/dotfiles/main/scripts/bootstrap)"
+EOF
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --repo)
+      DOTFILES_REPO="${2:-}"
+      shift 2
+      ;;
+    --dir)
+      DOTFILES_DIR="${2:-}"
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      fail "Unknown argument: $1"
+      ;;
+  esac
+done
+
+DOTFILES_DIR="${DOTFILES_DIR/#\~/$HOME}"
+
+find_brew() {
+  if command -v brew >/dev/null 2>&1; then
+    command -v brew
+  elif [ -x /opt/homebrew/bin/brew ]; then
+    printf '/opt/homebrew/bin/brew\n'
+  elif [ -x /usr/local/bin/brew ]; then
+    printf '/usr/local/bin/brew\n'
+  fi
+}
+
+info "Checking Xcode Command Line Tools"
+if ! xcode-select -p >/dev/null 2>&1; then
+  xcode-select --install
+  warn "Finish the Xcode Command Line Tools install, then rerun this script."
+  exit 1
+fi
+
+info "Checking Homebrew"
+BREW_BIN="$(find_brew || true)"
+if [ -z "$BREW_BIN" ]; then
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  BREW_BIN="$(find_brew || true)"
+fi
+[ -n "$BREW_BIN" ] || fail "Homebrew install finished, but brew was not found. Open a new terminal and rerun this script."
+eval "$("$BREW_BIN" shellenv)"
+
+info "Checking Git"
+if ! command -v git >/dev/null 2>&1; then
+  brew install git
+fi
+
+if [ ! -d "$DOTFILES_DIR/.git" ]; then
+  [ -n "$DOTFILES_REPO" ] || fail "$DOTFILES_DIR is not a git repo. Set DOTFILES_REPO or pass --repo."
+  info "Cloning dotfiles into $DOTFILES_DIR"
+  git clone "$DOTFILES_REPO" "$DOTFILES_DIR"
+fi
+
+cd "$DOTFILES_DIR"
+
+info "Installing packages from Brewfile"
+brew bundle --file "$DOTFILES_DIR/Brewfile"
+
+info "Backing up files that would conflict with stow"
+mkdir -p "$BACKUP_DIR"
+if [ -d "$DOTFILES_DIR/home" ]; then
+  while IFS= read -r -d '' file; do
+    rel="${file#$DOTFILES_DIR/home/}"
+    target="$HOME/$rel"
+    if [ -e "$target" ] && [ ! -L "$target" ]; then
+      mkdir -p "$BACKUP_DIR/$(dirname "$rel")"
+      mv "$target" "$BACKUP_DIR/$rel"
+      info "Backed up ~/$rel"
+    fi
+  done < <(find "$DOTFILES_DIR/home" -type f -print0)
+fi
+
+info "Linking dotfiles with stow"
+stow --dir "$DOTFILES_DIR" --target "$HOME" --restow home
+
+if git config --global user.name >/dev/null 2>&1 && git config --global user.email >/dev/null 2>&1; then
+  info "Git identity is configured"
+else
+  warn "Git identity is not configured yet. Edit ~/dotfiles/home/.gitconfig."
+fi
+
+info "Done"
+printf '\nNext steps:\n'
+printf '  1. Restart your terminal or run: source ~/.zshrc\n'
+printf '  2. Edit ~/dotfiles/home/.gitconfig if your name/email are placeholders.\n'
+printf '  3. Commit changes: cd ~/dotfiles && git add -A && git commit -m "Update dotfiles"\n'
+printf '\nBackups, if any: %s\n' "$BACKUP_DIR"

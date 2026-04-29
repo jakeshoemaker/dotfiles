@@ -1,13 +1,13 @@
-# Homebrew bundle for this Mac.
+# Focused Homebrew bundle for this setup.
 # Apply with: brew bundle --file ~/dotfiles/Brewfile
 
-# Taps
 tap "nikitabobko/tap"
 
-# Core CLI
+# CLI
 brew "git"
-brew "stow"
-brew "node" # includes npm
+brew "neovim"
+brew "tmux"
+brew "node"
 brew "ripgrep"
 brew "fd"
 brew "fzf"
@@ -17,10 +17,11 @@ brew "bat"
 brew "zoxide"
 brew "direnv"
 brew "starship"
-brew "mas"
+# Required for nvim-treesitter parser compilation
+brew "tree-sitter"
+brew "tree-sitter-cli"
 
 # Apps
 cask "nikitabobko/tap/aerospace"
-
-# Add more as you install things:
-#   brew bundle dump --file ~/dotfiles/Brewfile --force
+cask "ghostty"
+cask "font-ioskeley-mono"

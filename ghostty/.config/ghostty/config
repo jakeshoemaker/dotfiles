@@ -1,0 +1,5 @@
+font-family = "Ioskeley Mono"
+background-opacity = 0.85
+background-opacity-cells = true
+background-blur = true
+macos-titlebar-style = transparent

@@ -1,5 +1,3 @@
-# Managed by ~/dotfiles (GNU stow)
-
 # Shell behavior
 setopt auto_cd
 setopt interactive_comments
@@ -13,7 +11,7 @@ SAVEHIST=50000
 [ -d "$HOME/.local/bin" ] && export PATH="$HOME/.local/bin:$PATH"
 
 # Better defaults
-export EDITOR="${EDITOR:-vim}"
+export EDITOR="${EDITOR:-nvim}"
 export PAGER="less"
 export LESS="-R"
 

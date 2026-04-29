@@ -1,71 +1,55 @@
 # dotfiles
 
-Fresh Mac provisioning with Homebrew Bundle + GNU Stow.
+my simple dotfiles for macos, just the basics: git, Neovim, tmux, AeroSpace, and Ghostty.
 
-This repo manages:
-
-- Homebrew bootstrap
-- Git
-- npm via Homebrew `node`
-- Aerospace via Homebrew cask
-- Shell/git dotfiles via GNU Stow
-
-## Fresh Mac install
-
-Once this repo is pushed to GitHub, a fresh Mac can be provisioned with one bootstrap command.
+## Install
 
 ```sh
-DOTFILES_REPO=git@github.com:jakeshoemaker/dotfiles.git \
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/jakeshoemaker/dotfiles/main/scripts/bootstrap)"
-```
-
-That script will:
-
-1. Check/install Xcode Command Line Tools.
-2. Check/install Homebrew.
-3. Install Git if needed.
-4. Clone this repo to `~/dotfiles` if needed.
-5. Run `brew bundle` from `Brewfile`.
-6. Back up conflicting home files to `~/.dotfiles-backup/<timestamp>/`.
-7. Symlink dotfiles with GNU Stow.
-
-If the repo is private and SSH is not set up yet, create an SSH key and add it to GitHub before running the bootstrap:
-
-```sh
-ssh-keygen -t ed25519 -C "you@example.com"
-pbcopy < ~/.ssh/id_ed25519.pub
-```
-
-Then add the copied public key in GitHub:
-
-`GitHub → Settings → SSH and GPG keys → New SSH key`
-
-## Bootstrap an already-cloned repo
-
-```sh
+git clone https://github.com/jakeshoemaker/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-./scripts/bootstrap
+./install.sh
 ```
 
-Or explicitly:
+If you only want to relink configs and skip Homebrew:
 
 ```sh
-~/dotfiles/scripts/bootstrap --repo git@github.com:jakeshoemaker/dotfiles.git
+DOTFILES_SKIP_BREW=1 ./install.sh
 ```
 
-## Update
+## What `./install.sh` does
 
-```sh
-cd ~/dotfiles
-./scripts/update
-```
+- installs Xcode Command Line Tools if needed
+- installs Homebrew if needed
+- runs `brew bundle`
+- backs up conflicting files to `~/.dotfiles-backup/<timestamp>/`
+- symlinks the configs into your home directory
 
-## After changing installed apps
+## Linked configs
 
-```sh
-brew bundle dump --file ~/dotfiles/Brewfile --force
-```
+- `shell/.zshrc` -> `~/.zshrc`
+- `shell/.zprofile` -> `~/.zprofile`
+- `git/.gitconfig` -> `~/.gitconfig`
+- `nvim/.config/nvim` -> `~/.config/nvim`
+- `tmux/.tmux.conf` -> `~/.tmux.conf`
+- `aerospace/.aerospace.toml` -> `~/.aerospace.toml`
+- `ghostty/.config/ghostty` -> `~/.config/ghostty`
 
-Then review the diff before committing.
+## Default key ideas
 
-See [PLAN.md](PLAN.md) for the current rollout plan.
+### tmux
+- vi copy mode
+- pane movement with `prefix + h/j/k/l`
+- pane resizing with `prefix + H/J/K/L`
+- split vertically with `prefix + -`
+- split horizontally with `prefix + \\`
+
+### AeroSpace
+- focus with `alt-h/j/k/l`
+- move windows with `alt-shift-h/j/k/l`
+- switch workspaces with `alt-1` through `alt-9`
+- move windows to workspaces with `alt-shift-1` through `alt-shift-9`
+- open Ghostty with `alt-enter`
+
+## Adding more dotfiles
+
+Add the config under its own app folder, then add one link line in `install.sh`.

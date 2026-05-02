@@ -17,7 +17,9 @@ brew "bat"
 brew "zoxide"
 brew "direnv"
 brew "starship"
-# Required for nvim-treesitter parser compilation
+brew "podman"
+
+# Neovim dependencies
 brew "tree-sitter"
 brew "tree-sitter-cli"
 
@@ -25,3 +27,4 @@ brew "tree-sitter-cli"
 cask "nikitabobko/tap/aerospace"
 cask "ghostty"
 cask "font-ioskeley-mono"
+

@@ -1,0 +1,40 @@
+{
+  "runId": "e214c218",
+  "agent": "researcher",
+  "task": "Investigate why markdown buffers in Neovim 0.12.2 show a completion popup on every newline despite blink.cmp being disabled for markdown.\n\nMANDATORY: Use ctx_search extensively against these indexed sources:\n- neovim:help (Neovim 0.12 help manual)\n- blink.cmp:docs\n- dotfiles:nvim-plugins\n\nAlso read these files directly:\n- /Users/shoe/dotfiles/nvim/.config/nvim/lua/plugins/blink.lua\n- /Users/shoe/dotfiles/nvim/.config/nvim/lua/plugins/lsp.lua\n- /Users/shoe/dotfiles/nvim/.config/nvim/lua/shoe/opts.lua\n\nContext from prior investigation:\n- User sees popup labeled like Text [Buffer] or LSP completion on every newline in markdown\n- blink.cmp already has: enabled = function() return vim.bo.filetype ~= \"markdown\" end\n- marksman LSP is configured for markdown filetype\n- completeopt = 'menuone,noselect'\n- Neovim 0.12 has vim.lsp.completion.enable() native LSP autocompletion separate from blink\n\nYour job:\n1. Determine the ACTUAL source of the popup (blink vs native vim.lsp.completion vs marksman vs autocomplete option vs something else)\n2. Find the exact fix with evidence from neovim:help and/or blink.cmp docs\n3. Provide concrete lua config changes (file paths + exact code) to stop popup on Enter/newline in markdown while keeping normal editing\n4. Note if marksman should be disabled for completion only vs fully\n\nReturn a structured brief:\n- Root cause (with doc citations from ctx_search)\n- Recommended fix (exact code diff locations)\n- Alternative fixes considered\n- Verification steps\n\n---\n**Output:**\nWrite your findings to exactly this path: /Users/shoe/dotfiles/.pi-subagents/artifacts/outputs/e214c218/research.md\nThis path is authoritative for this run.\nIgnore any other output filename or output path mentioned elsewhere, including output destinations in the base agent prompt, system prompt, or task instructions.",
+  "exitCode": 0,
+  "usage": {
+    "input": 9548,
+    "output": 8347,
+    "cacheRead": 0,
+    "cacheWrite": 0,
+    "cost": 0,
+    "turns": 25
+  },
+  "model": "cursor/composer-2.5:fast:medium",
+  "attemptedModels": [
+    "cursor/composer-2.5:fast:medium"
+  ],
+  "modelAttempts": [
+    {
+      "model": "cursor/composer-2.5:fast:medium",
+      "success": true,
+      "exitCode": 0,
+      "usage": {
+        "input": 9548,
+        "output": 8347,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "cost": 0,
+        "turns": 25
+      }
+    }
+  ],
+  "durationMs": 172347,
+  "toolCount": 33,
+  "transcriptPath": "/Users/shoe/dotfiles/.pi-subagents/artifacts/e214c218_researcher_0_transcript.jsonl",
+  "skills": [
+    "context-mode"
+  ],
+  "timestamp": 1783175671539
+}

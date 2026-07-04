@@ -24,3 +24,14 @@ for _, pattern in ipairs({ "*.js", "*.ts", "*.lua", "*.tsx", "*.json" }) do
 		command = "setlocal tabstop=2 shiftwidth=2 expandtab",
 	})
 end
+
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("shoe-markdown-no-completion", { clear = true }),
+	pattern = { "markdown", "vimwiki" },
+	callback = function()
+		local ft = vim.bo.filetype
+		if ft == "vimwiki" or ft == "markdown" or ft:match("^markdown%.") then
+			vim.b.completion = false
+		end
+	end,
+})

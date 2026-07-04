@@ -9,7 +9,11 @@ return {
 		},
 		opts = {
 			enabled = function()
-				return vim.bo.filetype ~= "markdown"
+				local ft = vim.bo.filetype
+				if ft == "vimwiki" or ft == "markdown" or ft:match("^markdown%.") then
+					return false
+				end
+				return true
 			end,
 			completion = {
 				documentation = {

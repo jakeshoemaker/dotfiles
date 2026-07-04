@@ -28,7 +28,16 @@ if command -v brew >/dev/null; then
 fi
 
 # Aliases
-alias ls='eza --group-directories-first 2>/dev/null || command ls'
-alias ll='ls -la'
+if command -v eza >/dev/null && eza --version >/dev/null 2>&1; then
+  alias ls='eza --group-directories-first'
+  alias ll='eza -la --group-directories-first'
+else
+  alias ls='command ls'
+  alias ll='command ls -la'
+fi
 alias grep='grep --color=auto'
 alias cat='bat --paging=never 2>/dev/null || command cat'
+
+
+autoload -Uz compinit && compinit
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi

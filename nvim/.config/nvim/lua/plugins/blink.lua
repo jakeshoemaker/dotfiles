@@ -1,40 +1,16 @@
 return {
-	-- First, add supermaven-nvim
-	{
-		"supermaven-inc/supermaven-nvim",
-		config = function()
-			require("supermaven-nvim").setup({
-				-- Configure supermaven options as needed
-				disable_inline_completion = true, -- disable inline completion for use with blink.cmp
-			})
-		end,
-	},
-
-	-- Add blink.compat to bridge between nvim-cmp sources and blink.cmp
-	{
-		"saghen/blink.compat",
-		-- Use the latest release if you also use the latest release for blink.cmp
-		version = "*",
-		-- Lazy loading - will be loaded automatically when needed by blink.cmp
-		lazy = true,
-		-- Make sure to set opts so that lazy.nvim calls blink.compat's setup
-		opts = {},
-	},
-
-	-- Finally, configure blink.cmp with supermaven as a source
 	{
 		"saghen/blink.cmp",
-		-- Optionally specify a version if needed
 		version = "1.*",
 		dependencies = {
-			"supermaven-inc/supermaven-nvim",
-			"saghen/blink.compat",
 			"rafamadriz/friendly-snippets",
 			"onsails/lspkind.nvim",
 			"echasnovski/mini.icons",
 		},
 		opts = {
-			-- Completion menu settings
+			enabled = function()
+				return vim.bo.filetype ~= "markdown"
+			end,
 			completion = {
 				documentation = {
 					auto_show = true,
@@ -42,6 +18,7 @@ return {
 				},
 				ghost_text = { enabled = true },
 				menu = {
+					auto_show = true,
 					border = "rounded",
 					draw = {
 						columns = {
@@ -84,8 +61,6 @@ return {
 					},
 				},
 			},
-
-			-- Keymaps
 			keymap = {
 				preset = "default",
 				["<C-k>"] = { "select_prev", "fallback" },
@@ -115,41 +90,16 @@ return {
 				["<C-c>"] = { "cancel" },
 				["<CR>"] = { "accept", "fallback" },
 			},
-
-			-- Add supermaven as a completion source
 			sources = {
-				-- Include supermaven in the default sources
 				default = {
-					"supermaven",
 					"lsp",
 					"path",
 					"snippets",
 					"buffer",
 				},
-
-				-- Register the supermaven provider
-				providers = {
-					supermaven = {
-						name = "supermaven", -- Display name ( should be same as cmp source)
-						module = "blink.compat.source", -- Use blink.compat to connect to supermaven
-						-- Adjust priority if needed (higher number = higher priority)
-						score_offset = 100, -- Optional: can be adjusted to prioritize Supermaven suggestions
-
-						-- Any provider-specific options can go here
-						opts = {},
-					},
-				},
 			},
-
-			-- Optional: configure appearance
 			appearance = {
-				-- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
 				nerd_font_variant = "Nerd Font Mono",
-
-				-- Optional: Add an icon for Supermaven
-				kind_icons = {
-					Supermaven = "󰚩", -- You can change this to any icon you prefer
-				},
 			},
 		},
 	},

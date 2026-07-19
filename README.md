@@ -13,8 +13,11 @@ cd ~/dotfiles
 If you only want to relink configs and skip Homebrew:
 
 ```sh
-DOTFILES_SKIP_BREW=1 ./install.sh
+./scripts/relink.sh
 ```
+
+Edits to an already-linked config are reflected immediately. Run this script when
+adding a new linked config or repairing a replaced/broken symlink.
 
 ## What `./install.sh` does
 
